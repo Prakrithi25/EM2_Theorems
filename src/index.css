@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+:root {
+  font-family: Inter, 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.25rem;
+}
