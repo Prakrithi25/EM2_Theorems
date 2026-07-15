@@ -1,0 +1,46 @@
+import { useMemo } from 'react';
+import * as THREE from 'three';
+
+interface Arrow3DProps {
+  origin: [number, number, number];
+  direction: [number, number, number];
+  length?: number;
+  color?: string;
+  thickness?: number;
+  opacity?: number;
+}
+
+const UP = new THREE.Vector3(0, 1, 0);
+
+export default function Arrow3D({
+  origin,
+  direction,
+  length = 0.5,
+  color = '#4FD8C4',
+  thickness = 1,
+  opacity = 1,
+}: Arrow3DProps) {
+  const quaternion = useMemo(() => {
+    const dir = new THREE.Vector3(...direction);
+    if (dir.lengthSq() < 1e-10) return new THREE.Quaternion();
+    dir.normalize();
+    return new THREE.Quaternion().setFromUnitVectors(UP, dir);
+  }, [direction[0], direction[1], direction[2]]);
+
+  const shaftLen = length * 0.7;
+  const headLen = length * 0.3;
+  const r = 0.02 * thickness;
+
+  return (
+    <group position={origin} quaternion={quaternion}>
+      <mesh position={[0, shaftLen / 2, 0]}>
+        <cylinderGeometry args={[r, r, shaftLen, 8]} />
+        <meshStandardMaterial color={color} transparent opacity={opacity} />
+      </mesh>
+      <mesh position={[0, shaftLen + headLen / 2, 0]}>
+        <coneGeometry args={[r * 3, headLen, 10]} />
+        <meshStandardMaterial color={color} transparent opacity={opacity} />
+      </mesh>
+    </group>
+  );
+}
