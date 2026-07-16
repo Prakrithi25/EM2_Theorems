@@ -4,6 +4,7 @@ import { ThemeProvider } from './theme/ThemeContext';
 import TopNav from './components/TopNav';
 import Home from './pages/Home';
 import GreensPage from './pages/GreensPage';
+import FoundationsPage from './pages/FoundationsPage';
 
 const StokesPage = lazy(() => import('./pages/StokesPage'));
 const GaussPage = lazy(() => import('./pages/GaussPage'));
@@ -25,6 +26,7 @@ export default function App() {
           <Suspense fallback={<PageLoading />}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/foundations" element={<FoundationsPage />} />
               <Route path="/greens" element={<GreensPage />} />
               <Route path="/stokes" element={<StokesPage />} />
               <Route path="/gauss" element={<GaussPage />} />

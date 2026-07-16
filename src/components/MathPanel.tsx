@@ -1,5 +1,4 @@
 import { BlockMath, InlineMath } from 'react-katex';
-import 'katex/dist/katex.min.css';
 import type { ReactNode } from 'react';
 
 export function Section({ title, children }: { title: string; children: ReactNode }) {

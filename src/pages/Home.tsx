@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
 import { BlockMath } from 'react-katex';
-import 'katex/dist/katex.min.css';
 
 const cards = [
+  {
+    path: '/foundations',
+    symbol: '∇',
+    name: 'Foundations',
+    tex: '\\nabla f,\\quad \\nabla\\cdot\\mathbf{F},\\quad \\nabla\\times\\mathbf{F}',
+    blurb: 'Gradient, divergence, curl, directional derivatives, potentials — the building blocks, with an interactive explorer.',
+    accent: 'var(--ink)',
+  },
   {
     path: '/greens',
     symbol: '∮',
@@ -44,7 +51,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-5">
+      <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {cards.map((c) => (
           <Link
             key={c.path}
