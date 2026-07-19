@@ -13,8 +13,7 @@ export default function FeedbackModal({ siteName }: FeedbackModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const WEBHOOK_URL =
-    import.meta.env.VITE_DISCORD_WEBHOOK_URL ||
-    'https://discord.com/api/webhooks/1528287780504080435/HcCBYWI_gdigLfhUxpIPbp83CVcXvU6vh4BG-lQ9V1OIRBZqVNNqJ8APsf8PztMEkb1w';
+    import.meta.env.VITE_DISCORD_WEBHOOK_URL;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
