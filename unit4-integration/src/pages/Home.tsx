@@ -59,16 +59,6 @@ export default function Home() {
   return (
     <div className="h-full flex flex-col min-h-0 overflow-hidden px-4 sm:px-8 py-5 w-full gap-4">
       {/* Top Title Bar */}
-      <div className="shrink-0 flex items-baseline justify-between">
-        <div>
-          <h1 className="font-display text-xl sm:text-2xl font-bold tracking-tight" style={{ color: 'var(--ink)' }}>
-            Welcome to the Vector Integration Interactive Lab
-          </h1>
-          <p className="text-xs sm:text-sm font-medium" style={{ color: 'var(--ink-soft)' }}>
-            Select a topic tab on the left to explore theory, intuition, and interactive simulations.
-          </p>
-        </div>
-      </div>
 
       {/* Main Split Container: Vertical Tabs on Left + Display Panel on Right */}
       <div className="flex-1 min-h-0 flex flex-col sm:flex-row gap-4 overflow-hidden">
@@ -116,11 +106,11 @@ export default function Home() {
 
         {/* Main Content Display Panel */}
         <div
-          className="flex-1 min-h-0 rounded-xl border p-5 sm:p-6 overflow-y-auto flex flex-col justify-between shadow-xs"
+          className="flex-1 min-h-0 min-w-0 rounded-xl border p-4 sm:p-6 overflow-y-auto flex flex-col justify-between shadow-xs gap-6"
           style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)' }}
         >
           {activeTab === 'welcome' && (
-            <div className="space-y-5 flex-1 flex flex-col justify-between">
+            <div className="space-y-5 flex-1 flex flex-col justify-between min-w-0">
               <div className="space-y-2">
                 <h2 className="font-display text-lg sm:text-xl font-bold flex items-center gap-2" style={{ color: 'var(--teal)' }}>
                   <Sparkles className="w-5 h-5 shrink-0" />
@@ -131,7 +121,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 min-w-0">
                 <div className="p-4 rounded-xl border flex flex-col justify-between" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--line)' }}>
                   <div>
                     <div className="text-base font-bold mb-1" style={{ color: 'var(--teal)' }}>1. The Vector Field</div>
