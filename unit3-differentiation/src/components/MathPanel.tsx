@@ -25,7 +25,7 @@ export function Equation({ tex, label }: { tex: string; label?: string }) {
           {label}
         </div>
       )}
-      <MathJax dynamic className="flex justify-center text-center py-1">
+      <MathJax className="flex justify-center text-center py-1 font-medium">
         {`\\[${tex}\\]`}
       </MathJax>
     </div>
@@ -34,7 +34,7 @@ export function Equation({ tex, label }: { tex: string; label?: string }) {
 
 export function Inline({ tex }: { tex: string }) {
   return (
-    <MathJax inline dynamic className="inline-block align-baseline">
+    <MathJax inline className="inline-block align-baseline font-medium mx-0.5">
       {`\\(${tex}\\)`}
     </MathJax>
   );
