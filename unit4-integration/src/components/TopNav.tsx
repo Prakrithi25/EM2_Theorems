@@ -21,14 +21,8 @@ export default function TopNav() {
     >
       <div className="flex items-center gap-4 shrink-0">
         <NavLink to="/" className="font-display text-xl font-bold tracking-tight hover:opacity-80" style={{ color: 'var(--ink)' }}>
-          Unit IV : Vector Integration
+          Vector Integration
         </NavLink>
-        <span
-          className="text-xs font-mono-data px-2.5 py-1 rounded-full font-semibold uppercase tracking-wider hidden sm:inline-block"
-          style={{ color: 'var(--amber)', backgroundColor: 'var(--panel-2)', border: '1px solid var(--amber)' }}
-        >
-          15 Periods
-        </span>
       </div>
 
       <nav className="flex items-center gap-1 shrink-0">
