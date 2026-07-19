@@ -11,13 +11,13 @@ interface Props {
   showSlice: boolean;
 }
 
-const PARTICLE_COUNT = 260;
+const PARTICLE_COUNT = 380;
 
 function Particles({ strength, radius, running }: { strength: number; radius: number; running: boolean }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   const lanes = useMemo(() => {
-    const arr: { dir: Vec3; phase: number }[] = [];
+    const arr: { dir: Vec3; phase: number; speedOffset: number }[] = [];
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const theta = Math.acos(2 * Math.random() - 1);
       const phi = Math.random() * Math.PI * 2;
@@ -26,7 +26,7 @@ function Particles({ strength, radius, running }: { strength: number; radius: nu
         y: Math.sin(theta) * Math.sin(phi),
         z: Math.cos(theta),
       };
-      arr.push({ dir, phase: Math.random() });
+      arr.push({ dir, phase: Math.random(), speedOffset: 0.75 + Math.random() * 0.5 });
     }
     return arr;
   }, []);
@@ -35,19 +35,36 @@ function Particles({ strength, radius, running }: { strength: number; radius: nu
 
   useFrame((_, delta) => {
     if (!meshRef.current) return;
-    const speed = Math.max(0.08, Math.abs(strength)) * 0.6;
+    const speed = Math.max(0.1, Math.abs(strength)) * 0.55;
     const dummy = new THREE.Object3D();
     for (let i = 0; i < lanes.length; i++) {
       const lane = lanes[i];
-      if (running) {
-        lane.phase += delta * speed * (strength >= 0 ? 1 : -1);
-        lane.phase = ((lane.phase % 1) + 1) % 1;
+      if (running && strength !== 0) {
+        // Advance phase from 0 to 1 smoothly for both Source and Shrink
+        lane.phase = (lane.phase + delta * speed * lane.speedOffset) % 1;
       }
-      const r = lane.phase * (radius * 1.15);
-      const p = v3.scale(lane.dir, strength >= 0 ? r : radius * 1.15 - r);
+      // Set boundary beyond the sphere radius (1.65 * radius) so particles clearly cross into/out of the sphere
+      const maxDist = radius * 1.65;
+      
+      // If strength >= 0 (Source): particles start at center (0) and fly outward to maxDist
+      // If strength < 0 (Shrink): particles start outside (maxDist) and fly inward across the sphere boundary into the center (0)
+      const dist = strength >= 0 ? lane.phase * maxDist : (1 - lane.phase) * maxDist;
+      
+      const p = v3.scale(lane.dir, dist);
       dummy.position.set(p.x, p.z, p.y);
-      const s = 0.04 + 0.02 * Math.sin(lane.phase * Math.PI);
-      dummy.scale.setScalar(s);
+      
+      // Dynamic scaling:
+      // progressToCenter is 0 exactly at the center (origin) and 1 at maxDist outside
+      const progressToCenter = strength >= 0 ? lane.phase : 1 - lane.phase;
+      let s = 0.045 + 0.015 * Math.sin(lane.phase * Math.PI * 2);
+      if (progressToCenter < 0.1) {
+        // Smoothly scale from 0 right as they spawn at (or get sucked into) the center
+        s *= progressToCenter / 0.1;
+      } else if (progressToCenter > 0.88) {
+        // Smoothly fade out near the outer reach
+        s *= (1 - progressToCenter) / 0.12;
+      }
+      dummy.scale.setScalar(Math.max(0.001, s));
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(i, dummy.matrix);
     }
@@ -56,8 +73,8 @@ function Particles({ strength, radius, running }: { strength: number; radius: nu
 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, PARTICLE_COUNT]}>
-      <sphereGeometry args={[1, 6, 6]} />
-      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.5} />
+      <sphereGeometry args={[1, 8, 8]} />
+      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.65} />
     </instancedMesh>
   );
 }
@@ -125,7 +142,7 @@ function SceneContent({ strength, radius, running, showSlice, teal, ink }: Props
 
       <mesh>
         <sphereGeometry args={[radius, 48, 32]} />
-        <meshStandardMaterial color={teal} transparent opacity={0.16} side={THREE.DoubleSide} roughness={0.5} />
+        <meshStandardMaterial color={strength >= 0 ? teal : '#E8607A'} transparent opacity={0.18} side={THREE.DoubleSide} roughness={0.5} />
       </mesh>
       <lineSegments>
         <edgesGeometry args={[sphereEdgesGeo]} />

@@ -137,45 +137,65 @@ export default function StokesPage() {
               accent="var(--teal)"
             />
             {fieldType === 'swirl' && (
-              <div className="p-3.5 rounded-xl border space-y-1.5 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--amber)', color: 'var(--ink)' }}>
+              <div className="p-3.5 rounded-xl border space-y-2 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--amber)', color: 'var(--ink)' }}>
                 <div className="font-bold uppercase tracking-wide text-[var(--amber)] flex items-center gap-1.5">
-                  <span>💡 Why is Vertical Swirl giving {circulation.toFixed(2)}?</span>
+                  <span>The Merry-Go-Round Whirlpool</span>
                 </div>
-                <p className="text-xs leading-relaxed">
-                  Think of stirring tea with a spoon to make a spinning whirlpool. The wind blows in a circle around the center, so it pushes along our wire ring non-stop! Because the whirlpool spins straight up through the hoop opening, making the ring wider captures much more of the spinning wind, and turning up the wind strength makes both numbers climb higher.
+                <p className="text-xs leading-relaxed text-white font-medium">
+                  Imagine the wind in the room is spinning in circles around you like a merry-go-round:
                 </p>
+                <div className="space-y-1.5 text-xs leading-relaxed">
+                  <div className="flex gap-2 items-start">
+                    <span className="font-bold text-[var(--amber)] shrink-0">1. Around our Ring:</span>
+                    <span>Because the wind swirls in a circle, it blows right along our circular wire hoop endlessly! It pushes our ring non-stop, giving us our positive numbers (`+25.13`).</span>
+                  </div>
+                  <div className="flex gap-2 items-start">
+                    <span className="font-bold text-[var(--teal)] shrink-0">2. Through our Net:</span>
+                    <span>Because the whirlpool spins flat horizontally, the "whirl" points straight UP into the sky—right through the opening of our net! Whether our net is shallow like a plate or deep like a butterfly net, it catches the exact same amount of spinning wind.</span>
+                  </div>
+                </div>
               </div>
             )}
 
             {fieldType === 'shear' && (
-              <div className="p-3.5 rounded-xl border space-y-2.5 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--teal)', color: 'var(--ink)' }}>
+              <div className="p-3.5 rounded-xl border space-y-2 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--teal)', color: 'var(--ink)' }}>
                 <div className="font-bold uppercase tracking-wide text-[var(--teal)] flex items-center gap-1.5">
-                  <span>💡 Why is Horizontal Shear giving exactly 0.0000?</span>
+                  <span>Highway with Fast & Slow Lanes</span>
                 </div>
                 <p className="text-xs leading-relaxed text-white font-medium">
-                  In horizontal shear wind (<Inline tex="\\mathbf{F} = (z, 0, x)" />), air moves faster and faster the higher up you go. Here is why both calculations equal zero:
+                  Imagine wind blowing down a highway where air higher up moves very fast, but air down on the floor is completely still:
                 </p>
-                <div className="space-y-2 text-xs leading-relaxed">
+                <div className="space-y-1.5 text-xs leading-relaxed">
                   <div className="flex gap-2 items-start">
-                    <span className="font-bold text-[var(--amber)] shrink-0">1. Around the Wire Ring:</span>
-                    <span>Our wire ring lies flat on the ground (<Inline tex="z=0" />) where the wind speed is exactly zero! With zero wind blowing at ground level, there is nothing pushing along the wire boundary. That is why `Rim Circulation` equals <strong>0.00</strong>.</span>
+                    <span className="font-bold text-[var(--amber)] shrink-0">1. Around our Ring:</span>
+                    <span>Our wire ring is sitting flat on the floor where the wind speed is zero! Since there is no wind moving on the floor, the wind gives exactly <strong>zero</strong> push along our ring (`0.00`).</span>
                   </div>
                   <div className="flex gap-2 items-start">
-                    <span className="font-bold text-[var(--teal)] shrink-0">2. Through the 3D Dome:</span>
-                    <span>As you go higher up on our dome, there is spinning air. But notice the red arrows (`curl`): they point horizontally across the dome right-to-left! Because they roll sideways parallel to the ground, every swirl of air that enters one slope of our dome flows right back out the opposite slope. What enters one side leaves the other, so total net `Surface Curl Flux` equals <strong>0.00</strong>!</span>
+                    <span className="font-bold text-[var(--teal)] shrink-0">2. Through our Net:</span>
+                    <span>As you reach higher up across our dome, there is fast wind. But because the wind blows horizontally across the room, it enters the left side of our net and blows right back out the right side! What blows in immediately blows out, leaving the net total caught inside at exactly <strong>0.00</strong>.</span>
                   </div>
                 </div>
               </div>
             )}
 
             {fieldType === 'uniform' && (
-              <div className="p-3.5 rounded-xl border space-y-1.5 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--rose)', color: 'var(--ink)' }}>
+              <div className="p-3.5 rounded-xl border space-y-2 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--rose)', color: 'var(--ink)' }}>
                 <div className="font-bold uppercase tracking-wide text-[var(--rose)] flex items-center gap-1.5">
-                  <span>💡 Why is Uniform Breeze exactly 0.0000?</span>
+                  <span>Open Window Breeze</span>
                 </div>
-                <p className="text-xs leading-relaxed">
-                  Think of a steady breeze blowing straight through an open window at a constant speed. Half of our wire ring gets pushed forward (+work), but as the loop curves back around to close the circle, the exact same wind blows straight against it (-work). Those two equal pushes cancel each other out completely! Furthermore, straight wind has zero twist or whirlpool spin inside it, so not a single rotational arrow enters our dome.
+                <p className="text-xs leading-relaxed text-white font-medium">
+                  Imagine a smooth, steady breeze blowing straight through an open window at a constant speed:
                 </p>
+                <div className="space-y-1.5 text-xs leading-relaxed">
+                  <div className="flex gap-2 items-start">
+                    <span className="font-bold text-[var(--amber)] shrink-0">1. Around our Ring:</span>
+                    <span>As the straight breeze hits our wire ring, it pushes forward along the front half of the hoop. But as the hoop curves back around towards you, the exact same straight breeze blows right in your face! The forward push and backward push cancel out completely (`0.00`).</span>
+                  </div>
+                  <div className="flex gap-2 items-start">
+                    <span className="font-bold text-[var(--teal)] shrink-0">2. Through our Net:</span>
+                    <span>Because the breeze blows straight without any twisting or whirlpools inside it, there is zero spin to catch inside our net (`0.00`).</span>
+                  </div>
+                </div>
               </div>
             )}
           </div>
