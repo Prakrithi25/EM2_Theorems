@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../theme/ThemeContext';
 
+import FeedbackModal from './FeedbackModal';
+
 const NAV_ITEMS = [
   { to: '/', label: 'Overview' },
   { to: '/foundations', label: 'Integration & Work' },
@@ -51,14 +53,7 @@ export default function TopNav() {
       </nav>
 
       <div className="flex items-center gap-3 shrink-0 ml-2">
-        <button
-          onClick={toggle}
-          aria-label="Toggle dark mode"
-          className="w-9 h-9 rounded-full flex items-center justify-center border transition-transform hover:scale-105 shrink-0"
-          style={{ borderColor: 'var(--line)', color: 'var(--ink)' }}
-        >
-          {theme === 'dark' ? '☀' : '☾'}
-        </button>
+        <FeedbackModal siteName="Unit IV : Vector Integration" />
       </div>
     </header>
   );

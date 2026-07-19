@@ -62,11 +62,11 @@ export default function IntegrationFoundationsPage() {
             <>
               <Section title="2. Work Done by a Force & Path Independence">
                 <p>
-                  When a particle moves from point <Inline tex={"A"} /> to point <Inline tex={"B"} /> under the influence of a force field <Inline tex={"\\mathbf{F}"} />, the total mechanical **work done** is given by the line integral:
+                  When a particle moves from point <Inline tex={"A"} /> to point <Inline tex={"B"} /> under the influence of a force field <Inline tex={"\\mathbf{F}"} />, the total mechanical <strong className="font-semibold text-ink dark:text-white">work done</strong> is given by the line integral:
                 </p>
-                <Equation tex={"W = \\int_A^B \\mathbf{F} \\cdot d\\mathbf{r}"} />
+                <Equation tex={"W = \\int_A^B \\mathbf{F}\\cdot d\\mathbf{r} = \\int_A^B (F_1 dx + F_2 dy + F_3 dz)"} />
                 <p>
-                  If the force is **conservative** (<Inline tex={"\\nabla\\times\\mathbf{F} = \\mathbf{0}"} />), the line integral is **strictly path-independent**.
+                  If the force is <strong className="font-semibold text-ink dark:text-white">conservative</strong> (<Inline tex={"\\nabla\\times\\mathbf{F} = \\mathbf{0}"} />), the line integral is <strong className="font-semibold text-ink dark:text-white">strictly path-independent</strong>.
                 </p>
               </Section>
 

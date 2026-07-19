@@ -33,7 +33,7 @@ export default function Home() {
     <div className="flex-1 overflow-y-auto px-6 py-8 max-w-5xl mx-auto space-y-8">
       <Section title="UNIT – IV : Vector Integration (15 Periods)">
         <p className="text-base leading-relaxed">
-          Welcome to the **Unit IV: Vector Integration Visualizer**. This dedicated website is organized strictly around the exact Unit IV syllabus. Every mathematical symbol is rendered with **MathJax SVG** vectors for maximum clarity, and every theorem features interactive verification and evaluation tools without formal theoretical proofs.
+          Welcome to the <strong className="font-semibold text-ink dark:text-white">Unit IV: Vector Integration Visualizer</strong>. This dedicated website is organized strictly around the exact Unit IV syllabus. Every mathematical symbol is rendered with <strong className="font-semibold text-ink dark:text-white">MathJax SVG</strong> vectors for maximum clarity, and every theorem features interactive verification and evaluation tools without formal theoretical proofs.
         </p>
       </Section>
 

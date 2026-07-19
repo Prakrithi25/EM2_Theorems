@@ -19,26 +19,28 @@ export default function GreensPage() {
         <>
           <Section title="Green's Theorem for Scalar Point Functions">
             <p>
-              **Green's Theorem** establishes the fundamental connection between a line integral around a simple closed curve <Inline tex={"C"} /> and a double integral over the plane region <Inline tex={"D"} /> bounded by <Inline tex={"C"} />.
-            </p>
-            <p className="font-semibold pt-1" style={{ color: 'var(--ink)' }}>
-              Statement (Verification &amp; Evaluation Without Proof):
+              <strong className="font-semibold text-ink dark:text-white">Green's Theorem</strong> establishes the fundamental connection between a line integral around a simple closed curve <Inline tex={"C"} /> and a double integral over the plane region <Inline tex={"D"} /> bounded by <Inline tex={"C"} />.
             </p>
             <Equation
-              tex={"\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA"}
+              label="Green's Theorem in the Plane (Tangential / Circulation form)"
+              tex={"\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA"}
             />
             <p>
-              Here, <Inline tex={"P(x,y)"} /> and <Inline tex={"Q(x,y)"} /> are continuous scalar point functions with continuous partial derivatives. The integrand on the right is the **2D scalar curl** (<Inline tex={"\\hat{k}\\cdot(\\nabla\\times\\mathbf{F})"} />).
+              Here, <Inline tex={"P(x,y)"} /> and <Inline tex={"Q(x,y)"} /> are continuous scalar point functions with continuous partial derivatives. The integrand on the right is the <strong className="font-semibold text-ink dark:text-white">2D scalar curl</strong> (<Inline tex={"\\hat{k}\\cdot(\\nabla\\times\\mathbf{F})"} />).
             </p>
-          </Section>
-
-          <Section title="Physical Meaning & Circulation vs. Curl">
-            <p>
-              - **Left side (Boundary Circulation)**: Sums the tangential push of the vector field <Inline tex={"\\mathbf{F}=(P, Q)"} /> as you walk counter-clockwise around the loop <Inline tex={"C"} />.
-            </p>
-            <p>
-              - **Right side (Interior Area Curl)**: Sums the microscopic rotational spin density across every square unit of area inside the region <Inline tex={"D"} />.
-            </p>
+            <div className="p-3 rounded-lg border text-sm space-y-1.5" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--line)' }}>
+              <p className="font-semibold text-xs sm:text-sm" style={{ color: 'var(--teal)' }}>
+                🔍 Physical Meaning &amp; Verification Principle:
+              </p>
+              <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm" style={{ color: 'var(--ink-soft)' }}>
+                <li>
+                  <strong className="font-semibold text-ink dark:text-white">Left side (Boundary Circulation):</strong> Sums the tangential push of the vector field <Inline tex={"\\mathbf{F}=(P, Q)"} /> as you walk counter-clockwise around the loop <Inline tex={"C"} />.
+                </li>
+                <li>
+                  <strong className="font-semibold text-ink dark:text-white">Right side (Interior Area Curl):</strong> Sums the microscopic rotational spin density across every square unit of area inside the region <Inline tex={"D"} />.
+                </li>
+              </ul>
+            </div>
           </Section>
 
           <div className="flex rounded-lg p-1 gap-1 border my-4" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--line)' }}>

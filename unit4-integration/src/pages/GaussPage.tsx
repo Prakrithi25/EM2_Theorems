@@ -20,18 +20,20 @@ export default function GaussPage() {
         <>
           <Section title="Gauss Divergence Theorem (Without Proof)">
             <p>
-              The **Gauss Divergence Theorem** links the total outward flux of a vector field <Inline tex={"\\mathbf{F}"} /> across a closed bounding surface <Inline tex={"S"} /> to the volume integral of the divergence inside the enclosed solid region <Inline tex={"V"} />.
+              The <strong className="font-semibold text-ink dark:text-white">Gauss Divergence Theorem</strong> links the total outward flux of a vector field <Inline tex={"\\mathbf{F}"} /> across a closed bounding surface <Inline tex={"S"} /> to the volume integral of the divergence inside the enclosed solid region <Inline tex={"V"} />.
             </p>
-            <p className="font-semibold pt-1" style={{ color: 'var(--ink)' }}>
-              Statement (Verification &amp; Evaluation):
-            </p>
-            <Equation tex={"\\oiint_S \\mathbf{F} \\cdot d\\mathbf{S} = \\iiint_V (\\nabla\\cdot\\mathbf{F})\\,dV"} />
-            <p>
-              - **Surface Integral (Outward Flux)**: Measures net flow leaving across the spherical boundary per unit time.
-            </p>
-            <p>
-              - **Volume Integral (Divergence Sum)**: Sums the divergence (<Inline tex={"\\nabla\\cdot\\mathbf{F} = \\frac{\\partial F_1}{\\partial x} + \\frac{\\partial F_2}{\\partial y} + \\frac{\\partial F_3}{\\partial z}"} />) over all interior volume elements.
-            </p>
+            <Equation
+              label="Gauss Divergence Theorem — Surface flux equals interior divergence volume integral"
+              tex={"\\oiint_S \\mathbf{F}\\cdot\\hat{n}\\,dS = \\iiint_V (\\nabla\\cdot\\mathbf{F})\\,dV"}
+            />
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm" style={{ color: 'var(--ink-soft)' }}>
+              <li>
+                <strong className="font-semibold text-ink dark:text-white">Surface Integral (Outward Flux):</strong> Measures net flow leaving across the spherical boundary per unit time.
+              </li>
+              <li>
+                <strong className="font-semibold text-ink dark:text-white">Volume Integral (Divergence Sum):</strong> Sums the divergence (<Inline tex={"\\nabla\\cdot\\mathbf{F} = \\frac{\\partial F_1}{\\partial x} + \\frac{\\partial F_2}{\\partial y} + \\frac{\\partial F_3}{\\partial z}"} />) over all interior volume elements.
+              </li>
+            </ul>
           </Section>
 
           <Section title="Interactive Evaluation">

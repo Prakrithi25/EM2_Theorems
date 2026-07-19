@@ -3,20 +3,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --bg: #FAF7F0;
-  --panel: #FFFFFF;
-  --panel-2: #F1ECE1;
-  --ink: #1B2430;
-  --ink-soft: #5B6472;
-  --line: #DDD5C4;
-  --teal: #0E8C7F;
-  --amber: #B5720F;
-  --rose: #C2445A;
-  --grid: #C9BFA9;
-}
-
-.dark {
+:root, .dark {
   --bg: #0B0E13;
   --panel: #12161D;
   --panel-2: #171C24;
@@ -61,18 +48,20 @@ body {
   background-color: transparent;
 }
 
-/* MathJax crisp vector protection and styling */
+/* MathJax crisp vector rendering (no smudging or forced strokes) */
 mjx-container {
   color: var(--ink) !important;
-  font-size: 1.08em !important;
+  font-size: 1.15em !important;
   line-height: normal !important;
+  display: inline-block;
 }
 mjx-container[display="true"] {
-  margin: 0.5em 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0.6em 0 !important;
   overflow-x: auto;
   overflow-y: hidden;
 }
 mjx-container svg {
   fill: currentColor !important;
-  stroke: currentColor !important;
 }

@@ -19,14 +19,14 @@ export default function StokesPage() {
         <>
           <Section title="Stoke's Theorem (Without Proof)">
             <p>
-              **Stoke's Theorem** is the 3D generalization of Green's theorem, connecting the circulation of a spatial vector field around a closed boundary loop <Inline tex={"C"} /> to the surface flux of the curl across any smooth oriented surface <Inline tex={"S"} /> bounded by <Inline tex={"C"} />.
+              <strong className="font-semibold text-ink dark:text-white">Stoke's Theorem</strong> is the 3D generalization of Green's theorem, connecting the circulation of a spatial vector field around a closed boundary loop <Inline tex={"C"} /> to the surface flux of the curl across any smooth oriented surface <Inline tex={"S"} /> bounded by <Inline tex={"C"} />.
             </p>
-            <p className="font-semibold pt-1" style={{ color: 'var(--ink)' }}>
-              Statement (Verification &amp; Evaluation):
-            </p>
-            <Equation tex={"\\oint_C \\mathbf{F} \\cdot d\\mathbf{r} = \\iint_S (\\nabla\\times\\mathbf{F}) \\cdot d\\mathbf{S}"} />
+            <Equation
+              label="Stoke's Theorem — Surface integral of curl equals boundary circulation"
+              tex={"\\iint_S (\\nabla\\times\\mathbf{F})\\cdot\\hat{n}\\,dS = \\oint_C \\mathbf{F}\\cdot d\\mathbf{r}"}
+            />
             <p>
-              Notice that the surface <Inline tex={"S"} /> can be **any** capping dome sharing the boundary <Inline tex={"C"} />. Changing the dome height alters the surface normal vectors and local area elements, but the total flux of <Inline tex={"\\nabla\\times\\mathbf{F}"} /> remains invariant and strictly equal to the rim circulation!
+              Notice that the surface <Inline tex={"S"} /> can be <strong className="font-semibold text-ink dark:text-white">any</strong> capping dome sharing the boundary <Inline tex={"C"} />. Changing the dome height alters the surface normal vectors and local area elements, but the total flux of <Inline tex={"\\nabla\\times\\mathbf{F}"} /> remains invariant and strictly equal to the rim circulation!
             </p>
           </Section>
 
