@@ -1,8 +1,6 @@
-import { useTheme } from '../theme/ThemeContext';
+import FeedbackModal from './FeedbackModal';
 
 export default function TopNav() {
-  const { theme, toggle } = useTheme();
-
   return (
     <header
       className="flex items-center justify-between gap-3 px-6 py-3.5 border-b shrink-0 shadow-xs"
@@ -15,9 +13,7 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center gap-4">
-        <span className="text-xs font-mono-data font-semibold px-2.5 py-1 rounded border text-teal-400 border-teal-500/30 bg-teal-500/10">
-          DARK MODE
-        </span>
+        <FeedbackModal siteName="Unit III : Vector Differentiation" />
       </div>
     </header>
   );
