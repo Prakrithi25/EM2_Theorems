@@ -28,17 +28,17 @@ export default function StokesPage() {
             </p>
           </Section>
 
-          <Equation tex="\oint_{\partial S} \mathbf{F}\cdot d\mathbf{r} \;=\; \iint_S (\nabla\times\mathbf{F})\cdot d\mathbf{S}" />
+          <Equation tex={"\\oint_{\\partial S} \\mathbf{F}\\cdot d\\mathbf{r} \\;=\\; \\iint_S (\\nabla\\times\\mathbf{F})\\cdot d\\mathbf{S}"} />
 
           <Section title="What each side means">
             <p>
               <strong style={{ color: 'var(--ink)' }}>Left side — rim circulation:</strong> walk
-              once around the boundary curve <Inline tex="\partial S" /> (the amber ring) and add
-              up the field's push along your path, shown by the tangent arrows.
+              once around the boundary curve <Inline tex={"\\partial S"} /> (the amber ring) and
+              add up the field's push along your path, shown by the tangent arrows.
             </p>
             <p>
               <strong style={{ color: 'var(--ink)' }}>Right side — curl flux:</strong> at every
-              point on the surface, project the curl of <Inline tex="\mathbf{F}" /> onto the
+              point on the surface, project the curl of <Inline tex={"\\mathbf{F}"} /> onto the
               surface's normal direction (teal arrows), and add it up over the whole dome.
             </p>
             <p>

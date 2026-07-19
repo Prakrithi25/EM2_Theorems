@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #FAF7F0;
+  --panel: #FFFFFF;
+  --panel-2: #F1ECE1;
+  --ink: #1B2430;
+  --ink-soft: #5B6472;
+  --line: #DDD5C4;
+  --teal: #0E8C7F;
+  --amber: #B5720F;
+  --rose: #C2445A;
+  --grid: #C9BFA9;
+}
+
+.dark {
+  --bg: #0B0E13;
+  --panel: #12161D;
+  --panel-2: #171C24;
+  --ink: #E9E6DC;
+  --ink-soft: #9CA3AF;
+  --line: #232A35;
+  --teal: #4FD8C4;
+  --amber: #E8A33D;
+  --rose: #E8607A;
+  --grid: #2A3240;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.font-display {
+  font-family: 'Fraunces', serif;
+  font-optical-sizing: auto;
+}
+
+.font-mono-data {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--line);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* MathJax crisp vector protection and styling */
+mjx-container {
+  color: var(--ink) !important;
+  font-size: 1.08em !important;
+  line-height: normal !important;
+}
+mjx-container[display="true"] {
+  margin: 0.5em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+mjx-container svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}

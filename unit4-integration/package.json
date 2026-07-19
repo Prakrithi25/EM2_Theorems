@@ -1,26 +1,20 @@
 {
-  "name": "vector-calc-viz",
+  "name": "vector-calc-unit4-integration",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:unit3": "cd unit3-differentiation && npm run dev -- --port 5173",
-    "dev:unit4": "cd unit4-integration && npm run dev -- --port 5174",
     "build": "tsc -b && vite build",
-    "build:unit3": "cd unit3-differentiation && npm run build",
-    "build:unit4": "cd unit4-integration && npm run build",
-    "install:all": "npm install && cd unit3-differentiation && npm install && cd ../unit4-integration && npm install",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
-    "katex": "^0.17.0",
+    "better-react-mathjax": "^2.0.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-katex": "^3.1.0",
     "react-router-dom": "^7.18.1",
     "three": "^0.185.1"
   },
@@ -29,7 +23,6 @@
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@types/react-katex": "^3.0.4",
     "@types/three": "^0.185.1",
     "@vitejs/plugin-react": "^6.0.3",
     "autoprefixer": "^10.5.3",

@@ -78,3 +78,127 @@ body {
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+/*
+ * KaTeX protection layer — Tailwind v4's preflight reset clobbers critical
+ * layout properties inside .katex (display, line-height, vertical-align,
+ * box-sizing, and SVG fill/display) causing integral signs, large operators,
+ * and stretchy delimiters to collapse or disappear.
+ * These rules surgically restore what KaTeX needs, scoped to .katex only.
+ */
+
+/* Core layout reset guard */
+.katex,
+.katex * {
+  box-sizing: content-box;
+  line-height: normal;
+}
+
+/* Inline-level elements KaTeX relies on */
+.katex .katex-html,
+.katex .base,
+.katex .strut,
+.katex .mord,
+.katex .mop,
+.katex .mrel,
+.katex .mopen,
+.katex .mclose,
+.katex .mpunct,
+.katex .minner,
+.katex .mbin,
+.katex span {
+  display: inline;
+  vertical-align: baseline;
+}
+
+/* Vlist — KaTeX's core stacking mechanism for fractions, super/subscripts */
+.katex .vlist-t {
+  display: inline-table;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.katex .vlist-t2 {
+  margin-right: -2px;
+}
+.katex .vlist-r {
+  display: table-row;
+}
+.katex .vlist {
+  display: table-cell;
+  vertical-align: bottom;
+  position: relative;
+}
+.katex .vlist > span {
+  display: block;
+}
+
+/* SVG stretchy symbols (integral, summation, large brackets, etc.) */
+.katex svg {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: inherit;
+  fill: currentColor;
+  stroke: currentColor;
+}
+.katex svg path {
+  stroke: none;
+}
+
+/* Large operator glyphs (∫ ∑ ∏) */
+.katex .op-symbol {
+  position: relative;
+}
+.katex .op-symbol.small-op { font-family: KaTeX_Size1; }
+.katex .op-symbol.large-op { font-family: KaTeX_Size2; }
+
+/* Delimiter sizing fonts */
+.katex .delimsizing.size1 { font-family: KaTeX_Size1; }
+.katex .delimsizing.size2 { font-family: KaTeX_Size2; }
+.katex .delimsizing.size3 { font-family: KaTeX_Size3; }
+.katex .delimsizing.size4 { font-family: KaTeX_Size4; }
+
+/* Stretchy / hide-tail wrappers */
+.katex .stretchy {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+.katex .hide-tail {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Null delimiter */
+.katex .nulldelimiter {
+  display: inline-block;
+  width: 0.12em;
+}
+
+/* Reset any Tailwind border/margin/padding applied via * selector */
+.katex * {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Block display equations */
+.katex-display {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.katex-display > .katex {
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+}
+.katex-display > .katex > .katex-html {
+  display: block;
+  position: relative;
+}

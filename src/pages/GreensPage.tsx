@@ -23,23 +23,23 @@ export default function GreensPage() {
           <Section title="Green's Theorem">
             <p>
               Green's theorem connects two ways of measuring rotation in a 2D vector field{' '}
-              <Inline tex="\mathbf{F} = (P, Q)" />: walking its boundary, or summing its spin over
-              the interior.
+              <Inline tex={"\\mathbf{F} = (P, Q)"} />: walking its boundary, or summing its spin
+              over the interior.
             </p>
           </Section>
 
-          <Equation tex="\oint_C (P\,dx + Q\,dy) \;=\; \iint_D \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right) dA" />
+          <Equation tex={"\\oint_C (P\\,dx + Q\\,dy) \\;=\\; \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA"} />
 
           <Section title="What each side means">
             <p>
               <strong style={{ color: 'var(--ink)' }}>Left side — circulation:</strong> walk once
-              around the closed curve <Inline tex="C" /> counter-clockwise, and add up how much the
-              field pushes along your direction of travel at every step.
+              around the closed curve <Inline tex={"C"} /> counter-clockwise, and add up how much
+              the field pushes along your direction of travel at every step.
             </p>
             <p>
               <strong style={{ color: 'var(--ink)' }}>Right side — total curl:</strong> at every
-              point inside the region <Inline tex="D" />, the quantity{' '}
-              <Inline tex="\partial Q/\partial x - \partial P/\partial y" /> measures local
+              point inside the region <Inline tex={"D"} />, the quantity{' '}
+              <Inline tex={"\\partial Q/\\partial x - \\partial P/\\partial y"} /> measures local
               spin. Add it up over the whole interior.
             </p>
             <p>

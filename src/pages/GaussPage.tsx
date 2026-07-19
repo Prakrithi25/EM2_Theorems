@@ -28,24 +28,24 @@ export default function GaussPage() {
             </p>
           </Section>
 
-          <Equation tex="\oiint_{\partial V} \mathbf{F}\cdot d\mathbf{S} \;=\; \iiint_V (\nabla\cdot\mathbf{F})\, dV" />
+          <Equation tex={"\\oiint_{\\partial V} \\mathbf{F}\\cdot d\\mathbf{S} \\;=\\; \\iiint_V (\\nabla\\cdot\\mathbf{F})\\, dV"} />
 
           <Section title="What each side means">
             <p>
               <strong style={{ color: 'var(--ink)' }}>Left side — outward flux:</strong> at every
-              point on the closed surface <Inline tex="\partial V" /> (the sphere), project the
+              point on the closed surface <Inline tex={"\\partial V"} /> (the sphere), project the
               field onto the outward normal and add it up. Particles streaming outward (or inward)
               show this directly.
             </p>
             <p>
               <strong style={{ color: 'var(--ink)' }}>Right side — divergence volume:</strong> at
-              every point inside, <Inline tex="\nabla\cdot\mathbf{F}" /> measures how much the field
-              is "spreading out" locally. The cross-section slice colors this: teal for expanding,
-              rose for contracting.
+              every point inside, <Inline tex={"\\nabla\\cdot\\mathbf{F}"} /> measures how much the
+              field is "spreading out" locally. The cross-section slice colors this: teal for
+              expanding, rose for contracting.
             </p>
             <p>
-              Here <Inline tex="\mathbf{F} = k(x,y,z)" />, so divergence is a constant{' '}
-              <Inline tex="3k" /> everywhere — flip the sign to turn the sphere from a source into
+              Here <Inline tex={"\\mathbf{F} = k(x,y,z)"} />, so divergence is a constant{' '}
+              <Inline tex={"3k"} /> everywhere — flip the sign to turn the sphere from a source into
               a sink, and resize it to see both readouts scale together.
             </p>
           </Section>
