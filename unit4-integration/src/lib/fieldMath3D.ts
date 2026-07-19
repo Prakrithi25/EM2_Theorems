@@ -35,25 +35,33 @@ export const FIELDS_3D: Record<FieldType3D, Field3D> = {
   swirl: {
     id: 'swirl',
     label: 'Vertical swirl',
-    description: 'F = (−y, x, 0.3) — rotates around the z-axis while drifting upward. Curl points straight up.',
+    description: 'A spinning whirlpool around the center. Because the wind spins upright right through our wire loop, the total spinning air captured climbs higher as you widen the ring or increase wind strength.',
     F: (p) => ({ x: -p.y, y: p.x, z: 0.3 }),
     curl: () => ({ x: 0, y: 0, z: 2 }),
   },
   shear: {
     id: 'shear',
-    label: 'Tilted shear',
-    description: 'F = (z, 0, x) — a shear that tilts the swirl axis sideways.',
+    label: 'Horizontal shear',
+    description: 'Wind that moves faster higher up. At ground level around our wire ring, the wind speed is zero. Higher up across our dome, the spinning air rolls sideways: whatever enters one sloped side exits the other side, leaving net circulation at zero.',
     F: (p) => ({ x: p.z, y: 0, z: p.x }),
     curl: () => ({ x: 0, y: 2, z: 0 }),
   },
   uniform: {
     id: 'uniform',
     label: 'Uniform flow',
-    description: 'F = (0.6, 0.4, 0.2) — constant everywhere. Zero curl: circulation vanishes for any loop.',
+    description: 'A steady straight breeze blowing across the room at constant speed. Half the ring gets pushed forward and half gets pushed backward equally, canceling out completely to zero.',
     F: () => ({ x: 0.6, y: 0.4, z: 0.2 }),
     curl: () => ({ x: 0, y: 0, z: 0 }),
   },
 };
+
+export function getScaledField3D(field: Field3D, strength: number): Field3D {
+  return {
+    ...field,
+    F: (p) => v3.scale(field.F(p), strength),
+    curl: (p) => v3.scale(field.curl(p), strength),
+  };
+}
 
 export function numericCurl3D(field: Field3D, p: Vec3, h = 1e-3): Vec3 {
   const dFzdy = (field.F({ ...p, y: p.y + h }).z - field.F({ ...p, y: p.y - h }).z) / (2 * h);
@@ -86,7 +94,7 @@ export function domeRimTangent(_baseRadius: number, t: number): Vec3 {
   return { x: -Math.sin(theta), y: Math.cos(theta), z: 0 };
 }
 
-export function rimCirculation(field: Field3D, baseRadius: number, steps = 200): number {
+export function rimCirculation(field: Field3D, baseRadius: number, steps = 200, strength = 1.0): number {
   let total = 0;
   for (let i = 0; i < steps; i++) {
     const t0 = i / steps;
@@ -99,12 +107,12 @@ export function rimCirculation(field: Field3D, baseRadius: number, steps = 200):
     const d = v3.sub(p1, p0);
     total += v3.dot(field.F(mid), d);
   }
-  return total;
+  return total * strength;
 }
 
-export function rimCirculationPartial(field: Field3D, baseRadius: number, t: number, stepsPerFull = 200): number {
+export function rimCirculationPartial(field: Field3D, baseRadius: number, t: number, stepsPerFull = 200, strength = 1.0): number {
   const steps = Math.max(1, Math.floor(stepsPerFull * Math.max(0, Math.min(1, t))));
-  return rimCirculation(field, baseRadius, steps === 0 ? 1 : steps) * (steps === 0 ? 0 : 1);
+  return rimCirculation(field, baseRadius, steps === 0 ? 1 : steps, strength) * (steps === 0 ? 0 : 1);
 }
 
 export function surfaceCurlFlux(
@@ -112,7 +120,8 @@ export function surfaceCurlFlux(
   baseRadius: number,
   height: number,
   nu = 40,
-  nv = 60
+  nv = 60,
+  strength = 1.0
 ): number {
   let total = 0;
   const du = 1 / nu;
@@ -137,7 +146,7 @@ export function surfaceCurlFlux(
       total += v3.dot(field.curl(p), dS);
     }
   }
-  return total;
+  return total * strength;
 }
 
 export type DivFieldType = 'radial';

@@ -139,8 +139,7 @@ export default function Home() {
                       Imagine a weather map where every single point has an arrow indicating wind speed and direction, or a flowing river where currents push around rocks.
                     </p>
                   </div>
-                  <div className="mt-3 text-xs font-semibold px-2.5 py-1.5 rounded border flex items-center gap-1.5" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)', color: 'var(--teal)' }}>
-                    <span>Formula:</span>
+                  <div className="mt-3 text-xs font-semibold px-2.5 py-1.5 rounded border flex items-center justify-center" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)', color: 'var(--teal)' }}>
                     <Inline tex="\\mathbf{F}(x,y,z) = P\\,\\mathbf{i} + Q\\,\\mathbf{j} + R\\,\\mathbf{k}" />
                   </div>
                 </div>
@@ -152,8 +151,7 @@ export default function Home() {
                       Imagine walking along a path inside that windy field. A line integral calculates exactly how much the wind helps or fights you along every step of your walk (<strong className="text-white">Work Done</strong>).
                     </p>
                   </div>
-                  <div className="mt-3 text-xs font-semibold px-2.5 py-1.5 rounded border flex items-center gap-1.5" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)', color: 'var(--amber)' }}>
-                    <span>Formula:</span>
+                  <div className="mt-3 text-xs font-semibold px-2.5 py-1.5 rounded border flex items-center justify-center" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)', color: 'var(--amber)' }}>
                     <Inline tex="W = \\int_C \\mathbf{F}\\cdot d\\mathbf{r}" />
                   </div>
                 </div>
@@ -165,8 +163,7 @@ export default function Home() {
                       Imagine holding up a window screen or fishing net in the wind. A surface integral measures how much total air or water flows straight through the mesh of your screen (<strong className="text-white">Flux</strong>).
                     </p>
                   </div>
-                  <div className="mt-3 text-xs font-semibold px-2.5 py-1.5 rounded border flex items-center gap-1.5" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)', color: 'var(--rose)' }}>
-                    <span>Formula:</span>
+                  <div className="mt-3 text-xs font-semibold px-2.5 py-1.5 rounded border flex items-center justify-center" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--line)', color: 'var(--rose)' }}>
                     <Inline tex="\\Phi = \\iint_S \\mathbf{F}\\cdot \\hat{\\mathbf{n}}\\,dS" />
                   </div>
                 </div>

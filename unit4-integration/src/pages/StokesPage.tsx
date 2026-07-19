@@ -7,11 +7,13 @@ import { FIELDS_3D, type FieldType3D, rimCirculation, surfaceCurlFlux } from '..
 export default function StokesPage() {
   const [fieldType, setFieldType] = useState<FieldType3D>('swirl');
   const [height, setHeight] = useState(1.4);
+  const [strength, setStrength] = useState(1.0);
+  const [baseRadius, setBaseRadius] = useState(2.0);
   const [running, setRunning] = useState(true);
 
   const field = FIELDS_3D[fieldType];
-  const circulation = rimCirculation(field, 2.0);
-  const curlFlux = surfaceCurlFlux(field, 2.0, height);
+  const circulation = rimCirculation(field, baseRadius, 200, strength);
+  const curlFlux = surfaceCurlFlux(field, baseRadius, height, 40, 60, strength);
 
   return (
     <ModuleLayout
@@ -19,7 +21,7 @@ export default function StokesPage() {
         <>
           <Section title="3. Stoke's Theorem (Without Proof)">
             <p>
-              <strong className="font-semibold text-ink dark:text-white">Stoke&apos;s Theorem</strong> is the 3D big brother of Green&apos;s theorem. It connects the 1D circulation of a spatial vector field around a closed boundary rim <Inline tex={"C"} /> to the 2D surface flux of the curl across <strong className="text-white">any</strong> smooth oriented surface dome <Inline tex={"S"} /> sharing that rim.
+              <strong className="font-semibold text-ink dark:text-white">Stoke&apos;s Theorem</strong> is the 3D big brother of Green&apos;s theorem. It connects the 1D boundary circulation of a vector field around a closed wire ring <Inline tex={"C"} /> directly to the 2D surface flux of the local curl across <strong className="text-white">any</strong> smooth oriented dome <Inline tex={"S"} /> capped over that ring.
             </p>
             <Equation
               label="Stoke's Theorem — Surface integral of curl equals boundary circulation"
@@ -29,32 +31,32 @@ export default function StokesPage() {
 
           <PillarCard title="What is this Simulation?" accent="var(--teal)">
             <p>
-              You are exploring a 3D interactive chamber containing a circular wire rim <Inline tex={"C"} /> capped by a translucent surface dome <Inline tex={"S"} /> resting inside a 3D wind field. The arrows indicate the 3D vector forces and local curl vectors across the surface.
+              You are manipulating a 3D interactive chamber containing a circular wire boundary rim <Inline tex={"C"} /> capped by a stretchy translucent dome <Inline tex={"S"} /> inside a 3D wind field. Notice the glowing <strong style={{ color: '#F43F5E' }}>Rose arrows (∇×F)</strong> showing how the local microscopic rotational curl twists right across every patch of the sloped membrane!
             </p>
           </PillarCard>
 
           <IntuitionBox title="Why Do We Have This? (The Butterfly Net & Soap Bubble Analogy)">
-            Imagine holding a circular wire hoop in a breezy field. Whether you stretch a flat screen across the hoop, dip a round soap bubble across it, or attach a deep 3-foot butterfly net, <strong className="text-[var(--ink)] font-semibold">the total swirling air captured inside the mesh is 100% identical!</strong>
+            Imagine holding a circular wire hoop in a breezy field. Whether you stretch a flat screen across the hoop, dip a round soap bubble over it, or attach a deep 3-foot butterfly net, <strong className="text-[var(--ink)] font-semibold">the total amount of spinning air trapped inside the fabric is 100% identical!</strong>
             <br /><br />
-            Why? Because any swirling air that passes through the deep fabric of the net must first enter right across the outer wire ring (<Inline tex="\\oint_C \\mathbf{F}\\cdot d\\mathbf{r}" />). Therefore, you can puff up, squash, or stretch the dome height into any shape, and the total surface integral of curl (<Inline tex="\\iint_S (\\nabla\\times\\mathbf{F})\\cdot d\\mathbf{S}" />) remains strictly invariant and equal to the rim circulation!
+            Why? Because any spinning wind that blows into the deep net must first pass straight through the outer wire ring! So whether you flatten the dome or stretch it into a tall cone using the slider below, the total spinning air captured (`Surface Curl Flux`) stays locked equal to the wind pushing around the ring (`Rim Circulation`).
           </IntuitionBox>
 
           <ControlGuide
             items={[
               {
-                label: '3D Mouse Navigation',
-                desc: 'Click and drag anywhere on the 3D canvas with your mouse to rotate the scene from any viewing angle. Scroll to zoom in or out!',
-                badgeColor: 'var(--teal)',
+                label: 'Field Strength & Loop Size',
+                desc: 'Use the k-slider to make the wind spin faster or reverse directions. Use the R-slider to widen the wire ring—a bigger loop captures much more spinning wind!',
+                badgeColor: 'var(--rose)',
               },
               {
-                label: 'Dome Height Slider',
-                desc: 'Drag the slider from 0.00 (flat disk) up to 2.50 (tall stretched dome). Watch the surface curve change while the Curl Flux stays locked equal to the Rim Circulation!',
+                label: 'Dome Height Profile',
+                desc: 'Flatten the capping surface into a flat disk (0.00) or stretch it into a tall dome (2.50). Watch how the arrows along the sloped walls tilt while the total numbers stay locked together!',
                 badgeColor: 'var(--amber)',
               },
               {
-                label: '3D Field Selector',
-                desc: 'Switch between Swirl (intense vortex), Shear (layered asymmetric wind), and Uniform (constant breeze where both circulation and curl drop to 0).',
-                badgeColor: 'var(--rose)',
+                label: '3D Wind Mode Selector',
+                desc: 'Switch between Swirl (spinning whirlpool), Shear (sliding layers of wind), and Uniform (constant straight breeze).',
+                badgeColor: 'var(--teal)',
               },
             ]}
           />
@@ -78,7 +80,39 @@ export default function StokesPage() {
 
             <div className="space-y-1">
               <div className="flex justify-between text-sm">
-                <span className="font-semibold" style={{ color: 'var(--ink)' }}>Dome Height Profile:</span>
+                <span className="font-semibold" style={{ color: 'var(--ink)' }}>Field Strength Multiplier (k):</span>
+                <span className="font-mono-data font-medium" style={{ color: 'var(--ink)' }}>{strength.toFixed(1)}×</span>
+              </div>
+              <input
+                type="range"
+                min="-2"
+                max="2"
+                step="0.1"
+                value={strength}
+                onChange={(e) => setStrength(parseFloat(e.target.value))}
+                className="w-full accent-[var(--rose)] cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold" style={{ color: 'var(--ink)' }}>Wire Rim Radius Profile (R):</span>
+                <span className="font-mono-data font-medium" style={{ color: 'var(--ink)' }}>{baseRadius.toFixed(1)}</span>
+              </div>
+              <input
+                type="range"
+                min="1.0"
+                max="2.5"
+                step="0.1"
+                value={baseRadius}
+                onChange={(e) => setBaseRadius(parseFloat(e.target.value))}
+                className="w-full accent-[var(--amber)] cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold" style={{ color: 'var(--ink)' }}>Dome Height Profile (h):</span>
                 <span className="font-mono-data font-medium" style={{ color: 'var(--ink)' }}>{height.toFixed(2)}</span>
               </div>
               <input
@@ -102,9 +136,48 @@ export default function StokesPage() {
               value={curlFlux}
               accent="var(--teal)"
             />
-            <div className="p-3 rounded-lg text-xs font-semibold" style={{ backgroundColor: 'var(--panel-2)', color: 'var(--teal)', border: '1px solid var(--teal)' }}>
-              ✓ STOKE&apos;S VERIFICATION: The circulation around the fixed circular rim strictly equals the flux of curl through the 3D dome, regardless of height profile.
-            </div>
+            {fieldType === 'swirl' && (
+              <div className="p-3.5 rounded-xl border space-y-1.5 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--amber)', color: 'var(--ink)' }}>
+                <div className="font-bold uppercase tracking-wide text-[var(--amber)] flex items-center gap-1.5">
+                  <span>💡 Why is Vertical Swirl giving {circulation.toFixed(2)}?</span>
+                </div>
+                <p className="text-xs leading-relaxed">
+                  Think of stirring tea with a spoon to make a spinning whirlpool. The wind blows in a circle around the center, so it pushes along our wire ring non-stop! Because the whirlpool spins straight up through the hoop opening, making the ring wider captures much more of the spinning wind, and turning up the wind strength makes both numbers climb higher.
+                </p>
+              </div>
+            )}
+
+            {fieldType === 'shear' && (
+              <div className="p-3.5 rounded-xl border space-y-2.5 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--teal)', color: 'var(--ink)' }}>
+                <div className="font-bold uppercase tracking-wide text-[var(--teal)] flex items-center gap-1.5">
+                  <span>💡 Why is Horizontal Shear giving exactly 0.0000?</span>
+                </div>
+                <p className="text-xs leading-relaxed text-white font-medium">
+                  In horizontal shear wind (<Inline tex="\\mathbf{F} = (z, 0, x)" />), air moves faster and faster the higher up you go. Here is why both calculations equal zero:
+                </p>
+                <div className="space-y-2 text-xs leading-relaxed">
+                  <div className="flex gap-2 items-start">
+                    <span className="font-bold text-[var(--amber)] shrink-0">1. Around the Wire Ring:</span>
+                    <span>Our wire ring lies flat on the ground (<Inline tex="z=0" />) where the wind speed is exactly zero! With zero wind blowing at ground level, there is nothing pushing along the wire boundary. That is why `Rim Circulation` equals <strong>0.00</strong>.</span>
+                  </div>
+                  <div className="flex gap-2 items-start">
+                    <span className="font-bold text-[var(--teal)] shrink-0">2. Through the 3D Dome:</span>
+                    <span>As you go higher up on our dome, there is spinning air. But notice the red arrows (`curl`): they point horizontally across the dome right-to-left! Because they roll sideways parallel to the ground, every swirl of air that enters one slope of our dome flows right back out the opposite slope. What enters one side leaves the other, so total net `Surface Curl Flux` equals <strong>0.00</strong>!</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {fieldType === 'uniform' && (
+              <div className="p-3.5 rounded-xl border space-y-1.5 shadow-sm transition-all" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--rose)', color: 'var(--ink)' }}>
+                <div className="font-bold uppercase tracking-wide text-[var(--rose)] flex items-center gap-1.5">
+                  <span>💡 Why is Uniform Breeze exactly 0.0000?</span>
+                </div>
+                <p className="text-xs leading-relaxed">
+                  Think of a steady breeze blowing straight through an open window at a constant speed. Half of our wire ring gets pushed forward (+work), but as the loop curves back around to close the circle, the exact same wind blows straight against it (-work). Those two equal pushes cancel each other out completely! Furthermore, straight wind has zero twist or whirlpool spin inside it, so not a single rotational arrow enters our dome.
+                </p>
+              </div>
+            )}
           </div>
 
           <ImpactBox
@@ -138,12 +211,12 @@ export default function StokesPage() {
               {running ? '⏸ Pause' : '▶ Resume'}
             </button>
           </div>
-          <StokesScene fieldType={fieldType} height={height} running={running} />
+          <StokesScene fieldType={fieldType} height={height} running={running} strength={strength} baseRadius={baseRadius} />
           <div
             className="px-4 py-2 text-xs border-t shrink-0"
             style={{ borderColor: 'var(--line)', color: 'var(--ink-soft)', backgroundColor: 'var(--panel)' }}
           >
-            Rotate scene with mouse drag · scroll to zoom · adjust slider to morph dome curvature
+            Rotate scene with mouse drag · scroll to zoom · adjust sliders to scale field strength, loop radius & dome curvature
           </div>
         </div>
       }
