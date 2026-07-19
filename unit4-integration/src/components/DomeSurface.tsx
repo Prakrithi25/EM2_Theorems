@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { domePoint } from '../lib/fieldMath3D';
 
@@ -39,6 +39,10 @@ export default function DomeSurface({ baseRadius, height, color }: Props) {
     geo.computeVertexNormals();
     return geo;
   }, [baseRadius, height]);
+
+  useEffect(() => {
+    return () => geometry.dispose();
+  }, [geometry]);
 
   return (
     <mesh geometry={geometry}>

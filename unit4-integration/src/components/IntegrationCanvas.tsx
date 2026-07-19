@@ -31,6 +31,9 @@ export default function IntegrationCanvas({
   const tRef = useRef(0);
   const rafRef = useRef<number | undefined>(undefined);
   const [cssVars, setCssVars] = useState({ ink: '#1B2430', teal: '#0E8C7F', amber: '#B5720F', grid: '#C9BFA9', panel: '#fff' });
+  const lastTimeRef = useRef(performance.now());
+  const lastWorkReadoutRef = useRef<{ work: number; deltaPhi: number | null; sx: number; sy: number; ex: number; ey: number } | null>(null);
+  const lastAreaReadoutRef = useRef<{ areaLine: number; geomArea: number } | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -52,7 +55,7 @@ export default function IntegrationCanvas({
       grid: root.getPropertyValue('--grid').trim() || '#C9BFA9',
       panel: root.getPropertyValue('--panel').trim() || '#fff',
     });
-  });
+  }, []);
 
   const worldToScreen = useCallback(
     (p: Point) => {
@@ -70,10 +73,9 @@ export default function IntegrationCanvas({
   );
 
   useEffect(() => {
-    let last = performance.now();
     const loop = (now: number) => {
-      const dt = (now - last) / 1000;
-      last = now;
+      const dt = Math.min(0.1, (now - lastTimeRef.current) / 1000);
+      lastTimeRef.current = now;
       if (running) {
         tRef.current = (tRef.current + dt * 0.22) % 1;
       }
@@ -256,26 +258,45 @@ export default function IntegrationCanvas({
     const sEnd = worldToScreen(endPt);
 
     ctx.beginPath();
-    ctx.arc(sStart.x, sStart.y, 8, 0, Math.PI * 2);
+    ctx.arc(sStart.x, sStart.y, 9, 0, Math.PI * 2);
     ctx.fillStyle = cssVars.ink;
     ctx.fill();
     ctx.strokeStyle = cssVars.panel;
     ctx.lineWidth = 2;
     ctx.stroke();
 
+    ctx.font = 'bold 12px system-ui, sans-serif';
+    ctx.fillStyle = cssVars.ink;
+    ctx.fillText('A (Start)', sStart.x + 12, sStart.y + 4);
+
     ctx.beginPath();
-    ctx.arc(sEnd.x, sEnd.y, 8, 0, Math.PI * 2);
+    ctx.arc(sEnd.x, sEnd.y, 9, 0, Math.PI * 2);
     ctx.fillStyle = cssVars.teal;
     ctx.fill();
     ctx.strokeStyle = cssVars.panel;
     ctx.lineWidth = 2;
     ctx.stroke();
 
+    ctx.fillStyle = cssVars.teal;
+    ctx.fillText('B (End)', sEnd.x + 12, sEnd.y + 4);
+
     const phiStart = getPotential(startPt);
     const phiEnd = getPotential(endPt);
     const deltaPhi = phiStart !== null && phiEnd !== null ? phiEnd - phiStart : null;
 
-    onWorkReadout(work, deltaPhi, startPt, endPt);
+    const lw = lastWorkReadoutRef.current;
+    if (
+      !lw ||
+      Math.abs(lw.work - work) > 1e-6 ||
+      lw.deltaPhi !== deltaPhi ||
+      lw.sx !== startPt.x ||
+      lw.sy !== startPt.y ||
+      lw.ex !== endPt.x ||
+      lw.ey !== endPt.y
+    ) {
+      lastWorkReadoutRef.current = { work, deltaPhi, sx: startPt.x, sy: startPt.y, ex: endPt.x, ey: endPt.y };
+      onWorkReadout(work, deltaPhi, startPt, endPt);
+    }
   }
 
   function drawAreaScene(ctx: CanvasRenderingContext2D) {
@@ -317,7 +338,11 @@ export default function IntegrationCanvas({
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    onAreaReadout(areaLine, geomArea);
+    const la = lastAreaReadoutRef.current;
+    if (!la || Math.abs(la.areaLine - areaLine) > 1e-6 || Math.abs(la.geomArea - geomArea) > 1e-6) {
+      lastAreaReadoutRef.current = { areaLine, geomArea };
+      onAreaReadout(areaLine, geomArea);
+    }
   }
 
   function drawArrow(
@@ -345,8 +370,8 @@ export default function IntegrationCanvas({
     const w = screenToWorld(e.clientX - rect.left, e.clientY - rect.top);
     const distStart = Math.hypot(w.x - startPt.x, w.y - startPt.y);
     const distEnd = Math.hypot(w.x - endPt.x, w.y - endPt.y);
-    if (distStart < 0.55) dragRef.current = 'start';
-    else if (distEnd < 0.55) dragRef.current = 'end';
+    if (distStart < 0.85) dragRef.current = 'start';
+    else if (distEnd < 0.85) dragRef.current = 'end';
     (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
   }
 

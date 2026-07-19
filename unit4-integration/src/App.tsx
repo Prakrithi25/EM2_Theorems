@@ -9,11 +9,15 @@ import GaussPage from './pages/GaussPage';
 import { MathJaxContext } from 'better-react-mathjax';
 
 const mathJaxConfig = {
-  loader: { load: ['[tex]/ams'] },
+  loader: { load: ['[tex]/ams', '[tex]/esint', '[tex]/physics', '[tex]/boldsymbol'] },
   tex: {
-    packages: { '[+]': ['ams'] },
+    packages: { '[+]': ['ams', 'esint', 'physics', 'boldsymbol'] },
     inlineMath: [['$', '$'], ['\\(', '\\)']],
     displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    macros: {
+      oiint: '{\\mathop{\\vcenter{\\mathchoice{\\huge\\bigcirc}{\\large\\bigcirc}{\\bigcirc}{\\bigcirc}}\\kern-1.5em\\iint}}',
+      oiiint: '{\\mathop{\\vcenter{\\mathchoice{\\huge\\bigcirc}{\\large\\bigcirc}{\\bigcirc}{\\bigcirc}}\\kern-1.6em\\iiint}}'
+    }
   },
   svg: {
     fontCache: 'global',

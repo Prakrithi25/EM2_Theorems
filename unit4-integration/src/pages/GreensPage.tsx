@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import ModuleLayout from '../components/ModuleLayout';
 import GreensCanvas from '../components/GreensCanvas';
-import { Section, Equation, Readout, Inline } from '../components/MathPanel';
+import { Section, Equation, Readout, Inline, PillarCard, IntuitionBox, ControlGuide, ImpactBox } from '../components/MathPanel';
 import type { FieldType2D, Point } from '../lib/fieldMath2D';
+import { RotateCw, Settings } from 'lucide-react';
 
 export default function GreensPage() {
   const [fieldType, setFieldType] = useState<FieldType2D>('rotation');
@@ -17,48 +18,68 @@ export default function GreensPage() {
     <ModuleLayout
       guide={
         <>
-          <Section title="Green's Theorem for Scalar Point Functions">
+          <Section title="2. Green's Theorem for Scalar Point Functions">
             <p>
-              <strong className="font-semibold text-ink dark:text-white">Green's Theorem</strong> establishes the fundamental connection between a line integral around a simple closed curve <Inline tex={"C"} /> and a double integral over the plane region <Inline tex={"D"} /> bounded by <Inline tex={"C"} />.
+              <strong className="font-semibold text-[var(--ink)]">Green&apos;s Theorem</strong> is the bridge between a 1D line integral walking around a boundary loop <Inline tex={"C"} /> and a 2D double integral over the flat area <Inline tex={"D"} /> enclosed inside that loop.
             </p>
             <Equation
-              label="Green's Theorem in the Plane (Tangential / Circulation form)"
+              label="Green's Theorem in the Plane (Tangential / Circulation Form)"
               tex={"\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA"}
             />
-            <p>
-              Here, <Inline tex={"P(x,y)"} /> and <Inline tex={"Q(x,y)"} /> are continuous scalar point functions with continuous partial derivatives. The integrand on the right is the <strong className="font-semibold text-ink dark:text-white">2D scalar curl</strong> (<Inline tex={"\\hat{k}\\cdot(\\nabla\\times\\mathbf{F})"} />).
-            </p>
-            <div className="p-3 rounded-lg border text-sm space-y-1.5" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--line)' }}>
-              <p className="font-semibold text-xs sm:text-sm" style={{ color: 'var(--teal)' }}>
-                🔍 Physical Meaning &amp; Verification Principle:
-              </p>
-              <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm" style={{ color: 'var(--ink-soft)' }}>
-                <li>
-                  <strong className="font-semibold text-ink dark:text-white">Left side (Boundary Circulation):</strong> Sums the tangential push of the vector field <Inline tex={"\\mathbf{F}=(P, Q)"} /> as you walk counter-clockwise around the loop <Inline tex={"C"} />.
-                </li>
-                <li>
-                  <strong className="font-semibold text-ink dark:text-white">Right side (Interior Area Curl):</strong> Sums the microscopic rotational spin density across every square unit of area inside the region <Inline tex={"D"} />.
-                </li>
-              </ul>
-            </div>
           </Section>
 
-          <div className="flex rounded-lg p-1 gap-1 border my-4" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--line)' }}>
+          <PillarCard title="What is this Simulation?" accent="var(--amber)">
+            <p>
+              You are looking at a 2D vector field with an interactive boundary ring. Depending on the tab you select below, you either watch glowing particles walk along the outer ring counter-clockwise (<strong className="text-[var(--ink)] font-semibold">Boundary Circulation</strong>) or inspect the microscopic rotating gears spinning right inside the circle (<strong className="text-[var(--ink)] font-semibold">2D Curl</strong>).
+            </p>
+          </PillarCard>
+
+          <IntuitionBox title="Why Do We Have This? (The Paddle Wheel Swimming Pool)">
+            Imagine a swirling swimming pool. If you drop millions of tiny microscopic paddle wheels across the water surface, each wheel will spin on its axis (<strong className="text-[var(--ink)] font-semibold">Curl</strong>).
+            <br /><br />
+            Now look closely at what happens where two neighboring wheels touch: their teeth move in opposite directions and <em className="text-[var(--amber)] font-semibold">cancel each other out perfectly!</em> The only place where the rotation doesn&apos;t get canceled out is right along the pool&apos;s outer edge wall. Therefore, the sum of all microscopic internal spins strictly equals the total circulation of water rushing around the outer wall!
+          </IntuitionBox>
+
+          <div className="flex rounded-lg p-1 gap-1 border my-4 shadow-2xs" style={{ backgroundColor: 'var(--panel-2)', borderColor: 'var(--line)' }}>
             <button
               onClick={() => setMode('circulation')}
-              className={`flex-1 py-2 text-sm font-semibold rounded-md transition-all ${mode === 'circulation' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'}`}
-              style={mode === 'circulation' ? { backgroundColor: 'var(--panel)', color: 'var(--ink)' } : { color: 'var(--ink)' }}
+              className={`flex-1 py-2 px-3 text-xs sm:text-sm font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${mode === 'circulation' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'}`}
+              style={mode === 'circulation' ? { backgroundColor: 'var(--panel)', color: 'var(--ink)', border: '1px solid var(--line)' } : { color: 'var(--ink)' }}
             >
-              Boundary Walk ∮ (P dx + Q dy)
+              <RotateCw className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>Outer Walk</span>
+              <Inline tex="\\oint (P\\,dx + Q\\,dy)" />
             </button>
             <button
               onClick={() => setMode('curl')}
-              className={`flex-1 py-2 text-sm font-semibold rounded-md transition-all ${mode === 'curl' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'}`}
-              style={mode === 'curl' ? { backgroundColor: 'var(--panel)', color: 'var(--ink)' } : { color: 'var(--ink)' }}
+              className={`flex-1 py-2 px-3 text-xs sm:text-sm font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${mode === 'curl' ? 'shadow-xs' : 'opacity-70 hover:opacity-100'}`}
+              style={mode === 'curl' ? { backgroundColor: 'var(--panel)', color: 'var(--ink)', border: '1px solid var(--line)' } : { color: 'var(--ink)' }}
             >
-              Interior Spin Gears ∬ (∂Q/∂x − ∂P/∂y) dA
+              <Settings className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+              <span>Inner Gears</span>
+              <Inline tex="\\iint (Q_x - P_y)\\,dA" />
             </button>
           </div>
+
+          <ControlGuide
+            items={[
+              {
+                label: 'Vector Field Buttons',
+                desc: 'Try Rotation (pure circulation where internal curl is high), Source/Sink (outward/inward flow where curl is exactly 0!), or Saddle.',
+                badgeColor: 'var(--teal)',
+              },
+              {
+                label: 'Draggable Center & Radius',
+                desc: 'Drag the center dot on the canvas to move the region, or drag the outer handle on the circle edge to grow or shrink the ring size.',
+                badgeColor: 'var(--amber)',
+              },
+              {
+                label: 'Live Equation Verification',
+                desc: 'Watch the readouts below: the Boundary Line Integral exactly equals the Double Integral of Curl for every field and ring size!',
+                badgeColor: 'var(--rose)',
+              },
+            ]}
+          />
 
           <div className="space-y-3 pt-2 border-t" style={{ borderColor: 'var(--line)' }}>
             <div className="flex flex-wrap items-center justify-between text-sm gap-2">
@@ -68,8 +89,8 @@ export default function GreensPage() {
                   <button
                     key={f}
                     onClick={() => setFieldType(f)}
-                    className="px-2.5 py-1 rounded border text-xs font-medium capitalize"
-                    style={fieldType === f ? { backgroundColor: 'var(--teal)', color: '#fff', borderColor: 'var(--teal)' } : { backgroundColor: 'var(--panel-2)', color: 'var(--ink)', borderColor: 'var(--line)' }}
+                    className="px-2.5 py-1 rounded border text-xs font-semibold tracking-wide uppercase transition-all"
+                    style={fieldType === f ? { backgroundColor: 'var(--teal)', color: '#0B0E13', borderColor: 'var(--teal)' } : { backgroundColor: 'var(--panel-2)', color: 'var(--ink)', borderColor: 'var(--line)' }}
                   >
                     {f}
                   </button>
@@ -77,12 +98,33 @@ export default function GreensPage() {
               </div>
             </div>
 
-            <Readout label="Boundary Line Integral ∮ (P dx + Q dy)" value={lineVal} accent="var(--amber)" />
-            <Readout label="Double Integral of Curl ∬ (∂Q/∂x − ∂P/∂y) dA" value={areaVal} accent="var(--teal)" />
+            <Readout
+              label={<span className="flex items-center gap-1.5"><span>Boundary Line Integral</span><Inline tex="\\oint_C (P\\,dx + Q\\,dy)" /></span>}
+              value={lineVal}
+              accent="var(--amber)"
+            />
+            <Readout
+              label={<span className="flex items-center gap-1.5"><span>Double Integral of Curl</span><Inline tex="\\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA" /></span>}
+              value={areaVal}
+              accent="var(--teal)"
+            />
             <div className="p-3 rounded-lg text-xs font-semibold" style={{ backgroundColor: 'var(--panel-2)', color: 'var(--teal)', border: '1px solid var(--teal)' }}>
               ✓ THEOREM VERIFICATION: Notice how the circulation around the boundary perfectly equals the total sum of microscopic curl gears inside the domain!
             </div>
           </div>
+
+          <ImpactBox
+            items={[
+              {
+                title: 'Hurricane & Weather Tracking',
+                desc: 'Meteorologists use Green’s theorem to calculate total atmospheric vortex circulation around a storm cell directly from regional radar wind measurements.',
+              },
+              {
+                title: 'Airfoil Lift Calculation',
+                desc: 'In aerodynamics, 2D Green’s theorem calculates fluid circulation around a wing cross-section, directly yielding lift via the Kutta-Joukowski theorem.',
+              },
+            ]}
+          />
         </>
       }
       canvas={
@@ -126,3 +168,4 @@ export default function GreensPage() {
     />
   );
 }
+

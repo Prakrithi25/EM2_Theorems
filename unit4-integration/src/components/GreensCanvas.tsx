@@ -39,6 +39,8 @@ export default function GreensCanvas({
   const rafRef = useRef<number | undefined>(undefined);
   const [size, setSize] = useState({ w: 600, h: 500 });
   const [cssVars, setCssVars] = useState({ ink: '#1B2430', teal: '#0E8C7F', amber: '#B5720F', grid: '#C9BFA9', panel: '#fff' });
+  const lastTimeRef = useRef(performance.now());
+  const lastReadoutsRef = useRef<{ line: number; area: number } | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -60,7 +62,7 @@ export default function GreensCanvas({
       grid: root.getPropertyValue('--grid').trim() || '#C9BFA9',
       panel: root.getPropertyValue('--panel').trim() || '#fff',
     });
-  });
+  }, []);
 
   const worldToScreen = useCallback(
     (p: Point) => {
@@ -80,10 +82,9 @@ export default function GreensCanvas({
   const field = FIELDS_2D[fieldType];
 
   useEffect(() => {
-    let last = performance.now();
     const loop = (now: number) => {
-      const dt = (now - last) / 1000;
-      last = now;
+      const dt = Math.min(0.1, (now - lastTimeRef.current) / 1000);
+      lastTimeRef.current = now;
       if (running) {
         tRef.current = (tRef.current + dt * 0.18) % 1;
       }
@@ -123,7 +124,11 @@ export default function GreensCanvas({
 
     const line = lineIntegralPartial(field, polygon, mode === 'circulation' ? tRef.current : 1);
     const area = areaIntegralOfCurl(field, polygon, Math.max(0.08, radius / 30));
-    onReadouts(line, area);
+    const lr = lastReadoutsRef.current;
+    if (!lr || Math.abs(lr.line - line) > 1e-6 || Math.abs(lr.area - area) > 1e-6) {
+      lastReadoutsRef.current = { line, area };
+      onReadouts(line, area);
+    }
   }
 
   function drawFieldArrows(ctx: CanvasRenderingContext2D) {

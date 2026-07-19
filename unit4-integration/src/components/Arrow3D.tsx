@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
 interface Arrow3DProps {
@@ -31,16 +31,25 @@ export default function Arrow3D({
   const headLen = length * 0.3;
   const r = 0.02 * thickness;
 
+  const { cylGeo, coneGeo, mat } = useMemo(() => {
+    const cg = new THREE.CylinderGeometry(r, r, shaftLen, 8);
+    const ng = new THREE.ConeGeometry(r * 3, headLen, 10);
+    const m = new THREE.MeshStandardMaterial({ color, transparent: opacity < 1, opacity });
+    return { cylGeo: cg, coneGeo: ng, mat: m };
+  }, [r, shaftLen, headLen, color, opacity]);
+
+  useEffect(() => {
+    return () => {
+      cylGeo.dispose();
+      coneGeo.dispose();
+      mat.dispose();
+    };
+  }, [cylGeo, coneGeo, mat]);
+
   return (
     <group position={origin} quaternion={quaternion}>
-      <mesh position={[0, shaftLen / 2, 0]}>
-        <cylinderGeometry args={[r, r, shaftLen, 8]} />
-        <meshStandardMaterial color={color} transparent opacity={opacity} />
-      </mesh>
-      <mesh position={[0, shaftLen + headLen / 2, 0]}>
-        <coneGeometry args={[r * 3, headLen, 10]} />
-        <meshStandardMaterial color={color} transparent opacity={opacity} />
-      </mesh>
+      <mesh position={[0, shaftLen / 2, 0]} geometry={cylGeo} material={mat} />
+      <mesh position={[0, shaftLen + headLen / 2, 0]} geometry={coneGeo} material={mat} />
     </group>
   );
 }

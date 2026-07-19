@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ModuleLayout from '../components/ModuleLayout';
 import GaussScene from '../components/GaussScene';
-import { Section, Equation, Readout, Inline } from '../components/MathPanel';
+import { Section, Equation, Readout, Inline, PillarCard, IntuitionBox, ControlGuide, ImpactBox } from '../components/MathPanel';
 import { makeRadialField, sphereFlux, sphereVolumeIntegral } from '../lib/fieldMath3D';
 
 export default function GaussPage() {
@@ -18,9 +18,9 @@ export default function GaussPage() {
     <ModuleLayout
       guide={
         <>
-          <Section title="Gauss Divergence Theorem (Without Proof)">
+          <Section title="4. Gauss Divergence Theorem (Without Proof)">
             <p>
-              The <strong className="font-semibold text-ink dark:text-white">Gauss Divergence Theorem</strong> links the total outward flux of a vector field <Inline tex={"\\mathbf{F}"} /> across a closed bounding surface <Inline tex={"S"} /> to the volume integral of the divergence inside the enclosed solid region <Inline tex={"V"} />.
+              The <strong className="font-semibold text-ink dark:text-white">Gauss Divergence Theorem</strong> links the 2D total outward flux of a vector field <Inline tex={"\\mathbf{F}"} /> across a closed bounding surface <Inline tex={"S"} /> to the 3D volume integral of the divergence inside the enclosed solid container <Inline tex={"V"} />.
             </p>
             <Equation
               label="Gauss Divergence Theorem — Surface flux equals interior divergence volume integral"
@@ -28,19 +28,45 @@ export default function GaussPage() {
             />
             <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm" style={{ color: 'var(--ink-soft)' }}>
               <li>
-                <strong className="font-semibold text-ink dark:text-white">Surface Integral (Outward Flux):</strong> Measures net flow leaving across the spherical boundary per unit time.
+                <strong className="font-semibold text-ink dark:text-white">Surface Integral (Outward Flux):</strong> Measures net fluid or energy leaving right across the spherical boundary skin per unit time.
               </li>
               <li>
-                <strong className="font-semibold text-ink dark:text-white">Volume Integral (Divergence Sum):</strong> Sums the divergence (<Inline tex={"\\nabla\\cdot\\mathbf{F} = \\frac{\\partial F_1}{\\partial x} + \\frac{\\partial F_2}{\\partial y} + \\frac{\\partial F_3}{\\partial z}"} />) over all interior volume elements.
+                <strong className="font-semibold text-ink dark:text-white">Volume Integral (Divergence Sum):</strong> Sums the expansion rate (<Inline tex={"\\nabla\\cdot\\mathbf{F} = \\frac{\\partial F_1}{\\partial x} + \\frac{\\partial F_2}{\\partial y} + \\frac{\\partial F_3}{\\partial z}"} />) inside every microscopic cubic inch of volume.
               </li>
             </ul>
           </Section>
 
-          <Section title="Interactive Evaluation">
+          <PillarCard title="What is this Simulation?" accent="var(--rose)">
             <p>
-              In our radial field <Inline tex={"\\mathbf{F} = k\\mathbf{r}"} />, the divergence is strictly constant (<Inline tex={"\\nabla\\cdot\\mathbf{F} = 3k"} />). Vary the source/sink strength <Inline tex={"k"} /> and sphere radius <Inline tex={"R"} /> below to verify that both integrals always evaluate to exactly <Inline tex={"4\\pi k R^3"} />!
+              You are peering into a 3D translucent spherical container placed inside a radial vector field. Glowing vectors show fluid either spraying outward (<strong className="text-[var(--teal)] font-semibold">Source</strong>, green arrows) or sucking inward (<strong className="text-[var(--rose)] font-semibold">Sink</strong>, pink arrows).
             </p>
-          </Section>
+          </PillarCard>
+
+          <IntuitionBox title="Why Do We Have This? (The Leaky Hose in a Porous Balloon)">
+            Imagine wrapping a porous, stretchy rubber balloon completely around a sprinkler head that is pumping water inside. How much total water sprays out through the skin of the balloon per second (<span className="font-semibold text-[var(--ink)]">Outward Surface Flux</span> <Inline tex="\\oiint_S \\mathbf{F}\\cdot d\\mathbf{S}" />)?
+            <br /><br />
+            Common sense tells us that the total outflow through the balloon&apos;s skin must exactly match the rate at which water is being created by the leaky sprinkler head trapped inside (<span className="font-semibold text-[var(--ink)]">Volume Divergence</span> <Inline tex="\\iiint_V (\\nabla\\cdot\\mathbf{F})\\,dV" />)! If no water is created or destroyed inside (<Inline tex="\\nabla\\cdot\\mathbf{F} = 0" />), whatever enters from one side must exit the other. That is Gauss&apos;s Divergence Theorem!
+          </IntuitionBox>
+
+          <ControlGuide
+            items={[
+              {
+                label: 'Field Strength Slider (k)',
+                desc: 'Drag positive (k > 0) to turn on an outward-blowing Source (green arrows). Drag negative (k < 0) to turn on an inward-sucking Sink (pink arrows). Set to 0 for calm.',
+                badgeColor: 'var(--teal)',
+              },
+              {
+                label: 'Sphere Radius Slider (R)',
+                desc: 'Expand or shrink the spherical balloon. Notice how both the Outward Flux and Volume Integral grow proportionally to 4πkR³, always matching with 100% precision!',
+                badgeColor: 'var(--amber)',
+              },
+              {
+                label: 'Cross-Section & Navigation',
+                desc: 'Toggle the equatorial cross-section plane to inspect the internal core divergence. Click and drag the mouse to rotate the 3D sphere from any angle!',
+                badgeColor: 'var(--rose)',
+              },
+            ]}
+          />
 
           <div className="space-y-4 pt-4 border-t" style={{ borderColor: 'var(--line)' }}>
             <div className="space-y-1">
@@ -88,12 +114,33 @@ export default function GaussPage() {
               </label>
             </div>
 
-            <Readout label="Total Outward Surface Flux ∯ S F · dS" value={flux} accent="var(--teal)" />
-            <Readout label="Volume Integral of Divergence ∭ V (∇·F) dV" value={volInt} accent="var(--amber)" />
+            <Readout
+              label={<span className="flex items-center gap-1.5"><span>Total Outward Surface Flux</span><Inline tex="\\oiint_S \\mathbf{F}\\cdot d\\mathbf{S}" /></span>}
+              value={flux}
+              accent="var(--teal)"
+            />
+            <Readout
+              label={<span className="flex items-center gap-1.5"><span>Volume Integral of Divergence</span><Inline tex="\\iiint_V (\\nabla\\cdot\\mathbf{F})\\,dV" /></span>}
+              value={volInt}
+              accent="var(--amber)"
+            />
             <div className="p-3 rounded-lg text-xs font-semibold" style={{ backgroundColor: 'var(--panel-2)', color: 'var(--teal)', border: '1px solid var(--teal)' }}>
               ✓ GAUSS VERIFICATION: Notice that the 2D surface flux integral and the 3D interior divergence integral evaluate to identical values across every radius and field strength!
             </div>
           </div>
+
+          <ImpactBox
+            items={[
+              {
+                title: 'Gauss’s Law in Electrostatics',
+                desc: 'This exact theorem forms the first of Maxwell’s Equations—allowing engineers to compute electric fields around charged capacitors and microchips instantly by drawing an imaginary bounding sphere around them.',
+              },
+              {
+                title: 'Thermal & Electronics Cooling',
+                desc: 'CPU designers use divergence volume integrals to calculate total heat generation inside processor cores, and surface flux integrals to design cooling fins and fans that remove that exact heat.',
+              },
+            ]}
+          />
         </>
       }
       canvas={
@@ -125,3 +172,4 @@ export default function GaussPage() {
     />
   );
 }
+

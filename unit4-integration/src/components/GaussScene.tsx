@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { makeRadialField, v3, type Vec3 } from '../lib/fieldMath3D';
 
@@ -98,6 +98,12 @@ function CrossSectionSlice({ strength, radius }: { strength: number; radius: num
     return tex;
   }, [strength, radius]);
 
+  useEffect(() => {
+    return () => {
+      texture.dispose();
+    };
+  }, [texture]);
+
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[radius * 2.4, radius * 2.4]} />
@@ -107,6 +113,11 @@ function CrossSectionSlice({ strength, radius }: { strength: number; radius: num
 }
 
 function SceneContent({ strength, radius, running, showSlice, teal, ink }: Props & { teal: string; ink: string }) {
+  const sphereEdgesGeo = useMemo(() => new THREE.SphereGeometry(radius, 24, 16), [radius]);
+  useEffect(() => {
+    return () => sphereEdgesGeo.dispose();
+  }, [sphereEdgesGeo]);
+
   return (
     <>
       <ambientLight intensity={0.6} />
@@ -117,7 +128,7 @@ function SceneContent({ strength, radius, running, showSlice, teal, ink }: Props
         <meshStandardMaterial color={teal} transparent opacity={0.16} side={THREE.DoubleSide} roughness={0.5} />
       </mesh>
       <lineSegments>
-        <edgesGeometry args={[new THREE.SphereGeometry(radius, 24, 16)]} />
+        <edgesGeometry args={[sphereEdgesGeo]} />
         <lineBasicMaterial color={ink} transparent opacity={0.25} />
       </lineSegments>
 

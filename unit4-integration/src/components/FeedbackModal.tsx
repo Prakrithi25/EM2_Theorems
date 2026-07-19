@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { MessageSquare, X, Check, Plus } from 'lucide-react';
 
 interface FeedbackModalProps {
   siteName: string;
@@ -51,37 +52,33 @@ export default function FeedbackModal({ siteName }: FeedbackModalProps) {
 
     try {
       const formData = new FormData();
-      const payload = {
-        username: `${siteName} Feedback Bot`,
-        embeds: [
-          {
-            title: `💬 New Feedback / Bug Report (${siteName})`,
-            description: `${message || '*No text description provided.*'}\n\n**Automatically Included Diagnostics:**\n\`\`\`\nBrowser: ${navigator.userAgent}\nScreen: ${window.innerWidth}×${window.innerHeight}px (Monitor: ${window.screen.width}×${window.screen.height}px)\nURL: ${window.location.href}\n\`\`\``,
-            color: siteName.includes('III') ? 0x4FD8C4 : 0xE8A33D,
-            fields: [
-              { name: '🌐 Source Website', value: siteName, inline: true },
-              {
-                name: '🖥️ Screen Dimensions',
-                value: `${window.innerWidth}×${window.innerHeight}px (Screen: ${window.screen.width}×${window.screen.height}px)`,
-                inline: true,
-              },
-              {
-                name: '🔍 User Agent',
-                value: navigator.userAgent || 'Unknown Browser',
-                inline: false,
-              },
-              { name: '⏱️ Timestamp', value: new Date().toLocaleString(), inline: true },
-            ],
-            footer: {
-              text: 'Antigravity Vector Calculus Simulation Suite',
+      formData.append(
+        'payload_json',
+        JSON.stringify({
+          embeds: [
+            {
+              title: `Feedback / Bug Report: ${siteName}`,
+              description: message || '*No text provided.*',
+              color: 0xf59e0b, // amber
+              fields: [
+                {
+                  name: 'URL',
+                  value: window.location.href,
+                  inline: true,
+                },
+                {
+                  name: 'Time',
+                  value: new Date().toISOString(),
+                  inline: true,
+                },
+              ],
             },
-          },
-        ],
-      };
+          ],
+        })
+      );
 
-      formData.append('payload_json', JSON.stringify(payload));
-      images.forEach((file, index) => {
-        formData.append(`file[${index}]`, file, file.name || `image_${index}.png`);
+      images.forEach((file, idx) => {
+        formData.append(`file${idx}`, file);
       });
 
       const res = await fetch(WEBHOOK_URL, {
@@ -90,13 +87,14 @@ export default function FeedbackModal({ siteName }: FeedbackModalProps) {
       });
 
       if (!res.ok) {
-        throw new Error(`Server responded with status ${res.status}`);
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
 
       setStatus('success');
+      setMessage('');
+      setImages([]);
       setTimeout(() => {
         setIsOpen(false);
-        setMessage('');
         setImages([]);
         setStatus('idle');
       }, 2000);
@@ -118,7 +116,7 @@ export default function FeedbackModal({ siteName }: FeedbackModalProps) {
           color: 'var(--ink)',
         }}
       >
-        <span className="text-amber-400">💬</span>
+        <MessageSquare className="w-4 h-4 text-amber-400 shrink-0" />
         <span>Feedback & Bugs</span>
       </button>
 
